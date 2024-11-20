@@ -295,11 +295,13 @@
             
             for (let i = 0; i < 5; i++) {
                 if (i === 2) {
+                    // 연예인-색상 쌍은 그대로 유지
                     sequence.push(
                         { type: 'color', value: selectedColor },
                         { type: 'image', value: selectedCelebrity, isCelebrity: true }
                     );
                 } else {
+                    // 일반인-색상 쌍의 순서 변경 (일반인 먼저, 그 다음 색상)
                     sequence.push(
                         { type: 'image', value: shuffledModels[i], isCelebrity: false },
                         { type: 'color', value: shuffledColors[i > 2 ? i - 1 : i] }
@@ -384,6 +386,23 @@
                         }, COLOR_DURATION);
                     }
                 }, CELEBRITY_DURATION);
+            } else if (stimulus.type === 'color') {
+                stimulusDisplay.style.backgroundColor = stimulus.value;
+                experimentImage.style.display = 'none';
+
+                setTimeout(() => {
+                    const imageStimulus = currentSequence.shift();
+                    if (imageStimulus) {
+                        stimulusDisplay.style.backgroundColor = 'white';
+                        experimentImage.src = imageStimulus.value;
+                        experimentImage.style.display = 'block';
+
+                        setTimeout(() => {
+                            experimentImage.style.display = 'none';
+                            setTimeout(() => presentNextStimulus(), INTER_TRIAL_INTERVAL);
+                        }, CELEBRITY_DURATION);
+                    }
+                }, COLOR_DURATION);
             }
         }
 
