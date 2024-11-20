@@ -369,35 +369,47 @@
             const stimulusDisplay = document.querySelector('.stimulus-display');
             const experimentImage = document.getElementById('experimentImage');
 
+            // 모든 자극을 초기화
+            stimulusDisplay.style.backgroundColor = 'white';
+            experimentImage.style.display = 'none';
+
             if (stimulus.type === 'image') {
-                stimulusDisplay.style.backgroundColor = 'white';
+                // 이미지 자극 표시
                 experimentImage.src = stimulus.value;
                 experimentImage.style.display = 'block';
 
                 setTimeout(() => {
+                    // 이미지 자극 제거
                     experimentImage.style.display = 'none';
+
+                    // 다음 자극(색상)을 표시
                     const colorStimulus = currentSequence.shift();
-                    if (colorStimulus) {
+                    if (colorStimulus && colorStimulus.type === 'color') {
                         stimulusDisplay.style.backgroundColor = colorStimulus.value;
-                        
+
                         setTimeout(() => {
+                            // 색상 자극 제거
                             stimulusDisplay.style.backgroundColor = 'white';
                             setTimeout(() => presentNextStimulus(), INTER_TRIAL_INTERVAL);
                         }, COLOR_DURATION);
                     }
                 }, CELEBRITY_DURATION);
             } else if (stimulus.type === 'color') {
+                // 연예인-색상 쌍의 경우 (순서 유지)
                 stimulusDisplay.style.backgroundColor = stimulus.value;
-                experimentImage.style.display = 'none';
 
                 setTimeout(() => {
+                    // 색상 자극 제거
+                    stimulusDisplay.style.backgroundColor = 'white';
+
+                    // 다음 자극(이미지)을 표시
                     const imageStimulus = currentSequence.shift();
-                    if (imageStimulus) {
-                        stimulusDisplay.style.backgroundColor = 'white';
+                    if (imageStimulus && imageStimulus.type === 'image') {
                         experimentImage.src = imageStimulus.value;
                         experimentImage.style.display = 'block';
 
                         setTimeout(() => {
+                            // 이미지 자극 제거
                             experimentImage.style.display = 'none';
                             setTimeout(() => presentNextStimulus(), INTER_TRIAL_INTERVAL);
                         }, CELEBRITY_DURATION);
