@@ -293,21 +293,28 @@
             const shuffledColors = shuffleArray(availableColors);
             const shuffledModels = shuffleArray([...modelImages]);
             
-            for (let i = 0; i < 5; i++) {
-                if (i === 2) {
-                    // 연예인-색상 쌍은 그대로 유지
-                    sequence.push(
-                        { type: 'color', value: selectedColor, isCelebrity: true },
-                        { type: 'image', value: selectedCelebrity, isCelebrity: true }
-                    );
-                } else {
-                    // 일반인-색상 쌍의 순서 변경 (일반인 먼저, 그 다음 색상)
-                    sequence.push(
-                        { type: 'image', value: shuffledModels[i], isCelebrity: false },
-                        { type: 'color', value: shuffledColors[i > 2 ? i - 1 : i], isCelebrity: false }
-                    );
-                }
+            // 일반인-색상 쌍 (1, 2번째)
+            for (let i = 0; i < 2; i++) {
+                sequence.push(
+                    { type: 'image', value: shuffledModels[i], isNormal: true },
+                    { type: 'color', value: shuffledColors[i], isNormal: true }
+                );
             }
+
+            // 연예인-색상 쌍 (3번째)
+            sequence.push(
+                { type: 'color', value: selectedColor, isCelebrity: true },
+                { type: 'image', value: selectedCelebrity, isCelebrity: true }
+            );
+
+            // 일반인-색상 쌍 (4, 5번째)
+            for (let i = 2; i < 4; i++) {
+                sequence.push(
+                    { type: 'image', value: shuffledModels[i+1], isNormal: true },
+                    { type: 'color', value: shuffledColors[i+1], isNormal: true }
+                );
+            }
+
             return sequence;
         }
 
@@ -375,43 +382,33 @@
 
             // 연예인-색상 쌍인 경우
             if (stimulus.isCelebrity) {
-                // 기존 순서 유지 (색상 -> 연예인)
                 if (stimulus.type === 'color') {
                     stimulusDisplay.style.backgroundColor = stimulus.value;
-
                     setTimeout(() => {
                         stimulusDisplay.style.backgroundColor = 'white';
-                        const imageStimulus = currentSequence.shift();
-                        if (imageStimulus) {
-                            experimentImage.src = imageStimulus.value;
-                            experimentImage.style.display = 'block';
-
-                            setTimeout(() => {
-                                experimentImage.style.display = 'none';
-                                setTimeout(() => presentNextStimulus(), INTER_TRIAL_INTERVAL);
-                            }, CELEBRITY_DURATION);
-                        }
+                        const celebImage = currentSequence.shift();
+                        experimentImage.src = celebImage.value;
+                        experimentImage.style.display = 'block';
+                        setTimeout(() => {
+                            experimentImage.style.display = 'none';
+                            setTimeout(() => presentNextStimulus(), INTER_TRIAL_INTERVAL);
+                        }, CELEBRITY_DURATION);
                     }, COLOR_DURATION);
                 }
-            } 
+            }
             // 일반인-색상 쌍인 경우
-            else {
+            else if (stimulus.isNormal) {
                 if (stimulus.type === 'image') {
-                    // 일반인 이미지 먼저 표시
                     experimentImage.src = stimulus.value;
                     experimentImage.style.display = 'block';
-
                     setTimeout(() => {
                         experimentImage.style.display = 'none';
-                        const colorStimulus = currentSequence.shift();
-                        if (colorStimulus) {
-                            stimulusDisplay.style.backgroundColor = colorStimulus.value;
-
-                            setTimeout(() => {
-                                stimulusDisplay.style.backgroundColor = 'white';
-                                setTimeout(() => presentNextStimulus(), INTER_TRIAL_INTERVAL);
-                            }, COLOR_DURATION);
-                        }
+                        const colorStim = currentSequence.shift();
+                        stimulusDisplay.style.backgroundColor = colorStim.value;
+                        setTimeout(() => {
+                            stimulusDisplay.style.backgroundColor = 'white';
+                            setTimeout(() => presentNextStimulus(), INTER_TRIAL_INTERVAL);
+                        }, COLOR_DURATION);
                     }, CELEBRITY_DURATION);
                 }
             }
