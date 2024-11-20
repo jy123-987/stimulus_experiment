@@ -182,27 +182,27 @@
 
         <div class="celebrity-grid">
             <div class="celebrity-card">
-                <img src="../images/아이유.PNG" alt="아이유">
+                <img src="images/아이유.PNG" alt="아이유">
                 <h3>아이유</h3>
             </div>
             <div class="celebrity-card">
-                <img src="../images/김지원.PNG" alt="김지원">
+                <img src="images/김지원.PNG" alt="김지원">
                 <h3>김지원</h3>
             </div>
             <div class="celebrity-card">
-                <img src="../images/마동석.PNG" alt="마동석">
+                <img src="images/마동석.PNG" alt="마동석">
                 <h3>마동석</h3>
             </div>
             <div class="celebrity-card">
-                <img src="../images/유재석.PNG" alt="유재석">
+                <img src="images/유재석.PNG" alt="유재석">
                 <h3>유재석</h3>
             </div>
             <div class="celebrity-card">
-                <img src="../images/기안84.PNG" alt="기안84">
+                <img src="images/기안84.PNG" alt="기안84">
                 <h3>기안84</h3>
             </div>
             <div class="celebrity-card">
-                <img src="../images/쯔양.PNG" alt="쯔양">
+                <img src="images/쯔양.PNG" alt="쯔양">
                 <h3>쯔양</h3>
             </div>
         </div>
@@ -251,18 +251,18 @@
         let selectedCelebrity = null;
         let selectedColor = null;
 
-        const TOTAL_TRIALS = 4;  // 6에서 4로 변경
+        const TOTAL_TRIALS = 4;
         const COLOR_DURATION = 3000;
         const CELEBRITY_DURATION = 3000;
         const INTER_TRIAL_INTERVAL = 2000;
 
         const modelImages = [
-            '../images/neutral_images/일반인모델1.png',
-            '../images/neutral_images/일반인모델2.png',
-            '../images/neutral_images/일반인모델3.png',
-            '../images/neutral_images/일반인모델4.png',
-            '../images/neutral_images/일반인모델5.png',
-            '../images/neutral_images/일반인모델6.png'
+            'images/neutral_images/일반인모델1.png',
+            'images/neutral_images/일반인모델2.png',
+            'images/neutral_images/일반인모델3.png',
+            'images/neutral_images/일반인모델4.png',
+            'images/neutral_images/일반인모델5.png',
+            'images/neutral_images/일반인모델6.png'
         ];
 
         const AVAILABLE_COLORS = [
@@ -442,6 +442,11 @@
             document.querySelector('.stimulus-display').style.backgroundColor = 'white';
             document.getElementById('experimentImage').style.display = 'none';
             document.querySelector('.stimulus-display').style.display = 'none';
+            document.querySelector('.instruction-text').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
             document.querySelector('.instruction-text').style.display = 'block';
         });
     </script>
