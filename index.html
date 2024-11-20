@@ -301,8 +301,8 @@
                     );
                 } else {
                     sequence.push(
-                        { type: 'color', value: shuffledColors[i > 2 ? i - 1 : i] },
-                        { type: 'image', value: shuffledModels[i], isCelebrity: false }
+                        { type: 'image', value: shuffledModels[i], isCelebrity: false },
+                        { type: 'color', value: shuffledColors[i > 2 ? i - 1 : i] }
                     );
                 }
             }
@@ -367,23 +367,23 @@
             const stimulusDisplay = document.querySelector('.stimulus-display');
             const experimentImage = document.getElementById('experimentImage');
 
-            if (stimulus.type === 'color') {
-                stimulusDisplay.style.backgroundColor = stimulus.value;
-                experimentImage.style.display = 'none';
+            if (stimulus.type === 'image') {
+                stimulusDisplay.style.backgroundColor = 'white';
+                experimentImage.src = stimulus.value;
+                experimentImage.style.display = 'block';
 
                 setTimeout(() => {
-                    const imageStimulus = currentSequence.shift();
-                    if (imageStimulus) {
-                        stimulusDisplay.style.backgroundColor = 'white';
-                        experimentImage.src = imageStimulus.value;
-                        experimentImage.style.display = 'block';
-
+                    experimentImage.style.display = 'none';
+                    const colorStimulus = currentSequence.shift();
+                    if (colorStimulus) {
+                        stimulusDisplay.style.backgroundColor = colorStimulus.value;
+                        
                         setTimeout(() => {
-                            experimentImage.style.display = 'none';
+                            stimulusDisplay.style.backgroundColor = 'white';
                             setTimeout(() => presentNextStimulus(), INTER_TRIAL_INTERVAL);
-                        }, CELEBRITY_DURATION);
+                        }, COLOR_DURATION);
                     }
-                }, COLOR_DURATION);
+                }, CELEBRITY_DURATION);
             }
         }
 
